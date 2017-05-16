@@ -1,4 +1,4 @@
-## SAMV71 Network Interface for KSZ8061RNB Ethernet PHY
+## [SAMV71(Q21)](http://www.microchip.com/wwwproducts/en/ATSAMV71Q21) Network Interface for [KSZ8061RNB](http://www.microchip.com/wwwproducts/en/KSZ8061) Ethernet PHY
 
 This NetworkInterface.c implementation is based on the FreeRTOS+TCP-
 provided ATSAM4E microcontroller implementation. It relies upon the 
@@ -16,7 +16,7 @@ they are supported, as are other protocols atop TCP.
 Network Descriptors and Buffers are required by hardware to be in 
 non-cached SRAM. That leaves you two options:
 1) Leave D(ata) cache disabled.
-2) Mark an area of SRAM as non-cached, and put the buffers/descriptors there.
+2) Mark an area of SRAM as non-cached, and put the buffers/descriptors there. This allows the cache to operate on other areas of SRAM.
 
 In order to do the latter, it's necessary to use the MPU to disable 
 caching on an area of SRAM of large enough to cover descriptors and 
@@ -28,7 +28,7 @@ MEMORY
 {
   rom (rx)  : ORIGIN = 0x00400000, LENGTH = 0x00200000
   ram (rwx) : ORIGIN = 0x20400000, LENGTH = 0x00059C00
-  ram_nocache (rwx): ORIGIN = 0x20459C00, LENGTH = 0x6400      /* 25kb for ethernet descriptors/other non-cacheable data */
+  ram_nocache (rwx): ORIGIN = 0x20459C00, LENGTH = 0x6400      /* 25kb for ethernet */
   /* ... */
 }
 
@@ -71,11 +71,10 @@ and change the line about `NO_CACHE_SRAM_REGION_SIZE` to allow overriding the si
 #endif
 ```
 
-That should do it. (This will not affect data caching will be enabled for any 
-other sections of SRAM)
+That should do it.
 
 If you instead choose to leave the DCache disabled, you'll need to remove the 
 `__attribute__ ((section(".ram_nocache")))` portions of lines in gmac_raw_2.c.
 
-
+---
 Development of this network interface was funded by [Excellims](http://www.excellims.com/).
