@@ -319,7 +319,7 @@ uint8_t result;
 	/* On interrupt, device-registered peripheral handler GMAC_Handler(), defined above, will be called */
 
 	/* Get master clock (MCK) speed; must not exceed 240Mhz for GMAC Management Data Clock (MDC) to 
-	 * conform to 802.3 spec. (CPU Clock may need to be downscaled to work [see CONFIG_SYSCLK_PRES]) */
+	 * conform to 802.3 spec. (Clock may need to be downscaled to work [see CONFIG_SYSCLK_PRES or CONFIG_SYSCLK_DIV]) */
 	mck_hz = sysclk_get_peripheral_hz();
 	
 	/* Initialize the Ethernet PHY and store its address for later use */
@@ -408,10 +408,10 @@ const TickType_t xShortTime = pdMS_TO_TICKS( 100UL );
 		vTaskDelay( xShortTime );
 	}
 
-	FreeRTOS_printf( ( "xGMACWaitLS: %ld (PHY %d) freq %lu Mz\n",
+	FreeRTOS_printf( ( "xGMACWaitLS: %ld (PHY %d) periph freq %lu Mhz\n",
 		xReturn,
 		ethernet_phy_addr,
-		sysclk_get_cpu_hz() / HZ_PER_MHZ ) );
+		sysclk_get_peripheral_hz() / HZ_PER_MHZ ) );
 
 	return xReturn;
 }
