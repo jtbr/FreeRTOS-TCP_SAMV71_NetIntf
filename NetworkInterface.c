@@ -320,7 +320,7 @@ uint8_t result;
 
 	/* Get master clock (MCK) speed; must not exceed 240Mhz for GMAC Management Data Clock (MDC) to 
 	 * conform to 802.3 spec. (CPU Clock may need to be downscaled to work [see CONFIG_SYSCLK_PRES]) */
-	mck_hz = sysclk_get_cpu_hz();
+	mck_hz = sysclk_get_peripheral_hz();
 	
 	/* Initialize the Ethernet PHY and store its address for later use */
 	/* JB: NOTE, ethernet_phy_init from ASF was rewritten to return the PHY address */
